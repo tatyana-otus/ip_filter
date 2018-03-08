@@ -75,14 +75,14 @@ int main ()
 
         }
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { std::cout << ip.second; });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { std::cout << ip.second; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { if (filter<0,1>(ip.second)) std::cout << ip.second; });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (filter<0,1>(ip.second)) std::cout << ip.second; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { if (filter<0,46>(ip.second) && filter<1,70>(ip.second))
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (filter<0,46>(ip.second) && filter<1,70>(ip.second))
                                                                                   std::cout << ip.second; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { if (filter<0,46>(ip.second) || filter<1,46>(ip.second) ||
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (filter<0,46>(ip.second) || filter<1,46>(ip.second) ||
                                                                                   filter<2,46>(ip.second) || filter<3,46>(ip.second) )
                                                                                   std::cout << ip.second; });
 
