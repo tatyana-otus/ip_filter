@@ -1,6 +1,6 @@
 language: cpp
 before_script:
-  - sudo apt-get install gcc-5.4 g++-5.4
+  - sudo apt-get install -qq g++-6
   - sudo apt-get install libboost-test-dev -y
 script:
   - rm -f -r build
