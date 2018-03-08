@@ -6,18 +6,21 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include <set>
+#include <map>
 #include <sstream>
 #include <algorithm>
 #include <iterator>
 #include <assert.h>
 
-#include "ip_rec.h"
+//#include "ip_rec.h"
+#include "filter.h"
 
 
-std::ostream& operator << (std::ostream& os, const rec& ip) 
+std::ostream& operator << (std::ostream& os, const std::vector<std::string>& ip) 
 {
-    for(auto ip_part = ip.rec_1.cbegin(); ip_part != ip.rec_1.cend(); ++ip_part) {
-        if (ip_part != ip.rec_1.cbegin()){
+    for(auto ip_part = ip.cbegin(); ip_part != ip.cend(); ++ip_part) {
+        if (ip_part != ip.cbegin()){
             os << ".";
         }
         os << *ip_part;
@@ -25,6 +28,7 @@ std::ostream& operator << (std::ostream& os, const rec& ip)
     os << "\n";
     return os;
 }
+
 
 
 // ("",  '.') -> [""]
@@ -58,25 +62,29 @@ int main ()
 
 	 try
     {
-        std::vector<rec>  ip_pool;
+
+        std::multimap<uint32_t, std::vector<std::string>> ip_pool;
+ 
 
         for(std::string line; std::getline(std::cin, line);){ // generate !!!!!
             auto v = split(line, '\t');;  
-            ip_pool.push_back( rec(split(v.at(0), '.')) ); 
+            auto m = split(v.at(0), '.');
+            uint32_t  idx = (stoul(m[0]) << 24) | (stoul(m[1]) << 16) | (stoul(m[2]) << 8) | stoul(m[3]);
+
+            ip_pool.insert ( std::pair<uint32_t, std::vector<std::string>>(idx, m) );
+
         }
 
-        std::sort (ip_pool.begin(), ip_pool.end());
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { std::cout << ip.second; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const rec& ip) { std::cout << ip; });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { if (filter<0,1>(ip.second)) std::cout << ip.second; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const rec& ip) { if (filter<0,1>(ip)) std::cout << ip; });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { if (filter<0,46>(ip.second) && filter<1,70>(ip.second))
+                                                                                  std::cout << ip.second; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const rec& ip) { if (filter<0,46>(ip) && filter<1,70>(ip))
-                                                                                  std::cout << ip; });
-
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const rec& ip) { if (filter<0,46>(ip) || filter<1,46>(ip) ||
-                                                                                  filter<2,46>(ip) || filter<3,46>(ip) )
-                                                                                  std::cout << ip; });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](auto ip) { if (filter<0,46>(ip.second) || filter<1,46>(ip.second) ||
+                                                                                  filter<2,46>(ip.second) || filter<3,46>(ip.second) )
+                                                                                  std::cout << ip.second; });
 
     }
     catch(const std::exception &e)
