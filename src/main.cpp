@@ -2,9 +2,11 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
+
 #include "filter.h"
 
 
+static const auto cn_bytes_in_ip = 4;
 
 std::ostream& operator << (std::ostream& os, const rec_t& ip) 
 {
@@ -58,10 +60,10 @@ int main ()
         for(std::string line; std::getline(std::cin, line);){ 
             auto v = split(line, '\t');;  
             auto m = split(v.at(0), '.');
-            uint32_t  idx = (stoul(m[0]) << 24) | (stoul(m[1]) << 16) | (stoul(m[2]) << 8) | stoul(m[3]);
-
-            ip_pool.insert ( std::pair<uint32_t, rec_t>(idx, m) );
-
+            if (m.size() == cn_bytes_in_ip) {
+                uint32_t  idx = (stoul(m[0]) << 24) | (stoul(m[1]) << 16) | (stoul(m[2]) << 8) | stoul(m[3]);
+                ip_pool.insert ( std::pair<uint32_t, rec_t>(idx, m) );
+             }   
         }
 
         std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { std::cout << ip.second; });

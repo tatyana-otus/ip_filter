@@ -2,10 +2,12 @@
 
 #include <string>
 #include <vector>
-//#include <assert.h>
 
 using rec_t = std::vector<std::string>;
 using crec_t = const rec_t&;
+
+
+
 
 //-------------------------
 template <typename T>
@@ -47,5 +49,5 @@ inline bool f_or(T r)
 template <typename T,  int value>
 inline bool f_any(T r) 
 {
-	f_or<T, 0, value, 1, value, 2, value, 3, value>(r);
+	return f_or<T, 0, value, 1, value, 2, value, 3, value>(r);
 }
