@@ -19,16 +19,13 @@ BOOST_AUTO_TEST_CASE(test_version_valid)
 
 BOOST_AUTO_TEST_CASE(test_rec_filter)
 {	
-	BOOST_CHECK(  ( filter<0,11>({"11",  "22",   "33",   "44" }))  );
-	BOOST_CHECK(  ( filter<1,22>({"11",  "22",   "33",   "44" }))  );
-	BOOST_CHECK(  ( filter<2,33>({"11",  "22",   "33",   "44" }))  );
-	BOOST_CHECK(  ( filter<3,44>({"11",  "22",   "33",   "44" }))  );
+	rec_t r = {"11",  "22",   "33",   "44" };
 
-	BOOST_CHECK( !( filter<0,22>({"11",  "22",   "33",   "44" }))  );
-	BOOST_CHECK( !( filter<1,11>({"11",  "22",   "33",   "44" }))  );
-	BOOST_CHECK( !( filter<2,44>({"11",  "22",   "33",   "44" }))  );
-	BOOST_CHECK( !( filter<3,33>({"11",  "22",   "33",   "44" }))  );
-
+	BOOST_CHECK(  ( f_and<rec_t, 0,11>(r)) );
+	BOOST_CHECK(  ( f_and<rec_t, 0,11,3,44>(r)) );
+	BOOST_CHECK( !( f_and<rec_t, 0,11,2,44>(r)) );
+	BOOST_CHECK(  ( f_any<rec_t, 33>(r)) );
+	BOOST_CHECK( !( f_any<rec_t, 55>(r)) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
