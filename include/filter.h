@@ -11,45 +11,20 @@ static const auto cn_bytes_in_ip = 4;
 
 using rec_t = std::array<ip_t, cn_bytes_in_ip>;
 
-//-------------------------
-template <typename T>
-inline bool f_and(T r)
-{
-    return true;
-}
 
-template <typename T, int idx, int value, int ... args>
-inline bool f_and(T r)
-{
+template<int idx, int value>
+inline bool filter(const rec_t& r) {
+
     static_assert(idx < 4, "");
     static_assert(value <= 255, "");
     static_assert(value >=   0, "");
 
-    return ((r[idx] == value) && f_and<T, args ...>(r));
-}
+    return (r[idx] == value);
+} 
 
-//-------------------------
-
-template <typename T>
-inline bool f_or(T r)
+template <int value>
+inline bool filter_any(const rec_t& r) 
 {
-    return false;
-}
-
-template <typename T, int idx, int value, int ... args>
-inline bool f_or(T r)
-{
-    static_assert(idx < 4, "");
-    static_assert(value <= 255, "");
-    static_assert(value >=   0, "");
-
-    return ((r[idx]== value) || f_or<T, args ...>(r));
-}
-
-//-------------------------
-
-template <typename T,  int value>
-inline bool f_any(T r) 
-{
-    return f_or<T, 0, value, 1, value, 2, value, 3, value>(r);
+    return (filter<0, value>(r) || filter<1, value>(r) ||
+            filter<2, value>(r) || filter<3, value>(r));
 }

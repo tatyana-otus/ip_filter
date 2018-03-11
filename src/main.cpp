@@ -54,9 +54,16 @@ int main ()
 
         std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { std::cout << ip; });
 
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (f_and<rec_t, 0,1>(ip))          std::cout << ip; });
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (f_and<rec_t, 0,46, 1, 70>(ip))  std::cout << ip; });
-        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (f_any<rec_t, 46>(ip))           std::cout << ip; });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (filter<0,1>(ip))
+                                                                                   std::cout << ip; 
+                                                                             });
+
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (filter<0,46>(ip) && filter<1,70>(ip))  
+                                                                                    std::cout << ip; 
+                                                                             });
+        std::for_each(ip_pool.crbegin(), ip_pool.crend(), [](const auto& ip) { if (filter_any<46>(ip))  
+                                                                                    std::cout << ip; 
+                                                                             });
 
     }
     catch(const std::exception &e)
