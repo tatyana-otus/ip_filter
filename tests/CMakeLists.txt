@@ -2,8 +2,7 @@ project(test)
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-#add_executable(test_main_cli test_main.cpp ../src/ip_rec.cpp)
-add_executable(test_main_cli test_main.cpp )
+add_executable(test_main_cli test_main.cpp ../src/filter.cpp)
 
 target_include_directories(test_main_cli PRIVATE ../include)
 target_include_directories(test_main_cli PRIVATE ${Boost_INCLUDE_DIR})
@@ -21,8 +20,13 @@ target_link_libraries(test_main_cli
   helloworld
 )
 
+#--log_level=all
 enable_testing()
-add_test(test_version_valid test_main_cli -t test_suite_main/test_version_valid)
-#add_test(test_rec_compare   test_main_cli -t */test_rec_compare)
-add_test(test_rec_filter    test_main_cli -t */test_rec_filter)
+
+add_test(test_version_valid  test_main_cli -t test_suite_main/test_version_valid)
+
+add_test(test_rec_filter     test_main_cli -t test_suite_ip_filter/rec_filter)
+add_test(test_empty_data     test_main_cli -t test_suite_ip_filter/empty_data )
+add_test(test_valid_data     test_main_cli -t test_suite_ip_filter/valid_data )
+add_test(test_invalid_data   test_main_cli -t test_suite_ip_filter/invalid_data )
 

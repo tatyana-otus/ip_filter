@@ -1,15 +1,16 @@
 #add_executable(ip_filter main.cpp ip_rec.cpp)
-add_executable(ip_filter main.cpp )
+add_executable(ip_filter main.cpp filter.cpp )
 
 target_include_directories(ip_filter PRIVATE ../include)
 
+#SET( CMAKE_VERBOSE_MAKEFILE ON )
 set_target_properties(ip_filter PROPERTIES
   CXX_STANDARD 14
   CXX_STANDARD_REQUIRED ON
-  COMPILE_OPTIONS -Wpedantic -Wall -Wextra
+  COMPILE_OPTIONS -Wall -Wextra -Wpedantic 
 )
 
-#target_link_libraries(helloworld_cli helloworld)
+#set(CMAKE_BUILD_TYPE Debug)
 
 install(TARGETS ip_filter RUNTIME DESTINATION bin)
 
