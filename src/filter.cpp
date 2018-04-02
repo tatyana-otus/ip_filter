@@ -38,7 +38,7 @@ std::vector<rec_t> get_data(std::istream& is)
     std::vector<rec_t> pool;
 
     for(std::string line; std::getline(is, line);){ 
-        auto v = split(line, '\t');;  
+        auto v = split(line, '\t'); 
         auto m = split(v.at(0), '.');
         if (m.size() == cn_bytes_in_ip) {     
 

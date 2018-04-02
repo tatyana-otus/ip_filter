@@ -94,6 +94,17 @@ BOOST_AUTO_TEST_CASE(invalid_data)
     "31.29.168.852\t17\t\n",   // invalid *.*.*.852 > 255 !!!
 
             "31.29.168.852\n");     
+
+    test_ip_filter(
+    "1.2.3.4 fasfasf\t2\t1\n",
+
+            "1.2.3.4\n"
+            "1.2.3.4\n");
+
+    BOOST_CHECK_THROW(test_ip_filter("fasfasf 1.2.3.4 \t2\t1\n", ""), std::invalid_argument);
+    BOOST_CHECK_THROW(test_ip_filter("1.2.3.43423423423423423432423234234 \t2\t1\n", ""), std::out_of_range);
+
+    test_ip_filter("1.2.3,4.8.8 \t2\t1\n", "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

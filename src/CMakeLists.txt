@@ -1,4 +1,4 @@
-#add_executable(ip_filter main.cpp ip_rec.cpp)
+
 add_executable(ip_filter main.cpp filter.cpp )
 
 target_include_directories(ip_filter PRIVATE ../include)
